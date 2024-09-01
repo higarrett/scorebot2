@@ -1,0 +1,4 @@
+dnspython==2.6.1
+ldap3==2.9.1
+ping3==4.0.8
+pyasn1==0.6.0
