@@ -28,12 +28,12 @@ def dns_lookup(dns_server, hostnames):
 
     #return ' | '.join(results)
     #print(result_string)
-    print(f"Successes: {success_count}, Failures: {failure_count}")
+    #print(f"Successes: {success_count}, Failures: {failure_count}")
 
     if success_count > failure_count:
-        return 10
+        return "success"
     else:
-        return 0
+        return "fail"
 
 def main():
     dns_server = '10.20.30.11'
