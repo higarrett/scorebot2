@@ -62,7 +62,7 @@ def check_inbox_2(imap_server, username, password):
 
 def run(smtp_server, smtp_port, imap_server, username, password, recipient):
     # Generate a unique subject using UUID
-    unique_subject = f"Test Email {uuid.uuid4()}"
+    unique_subject = f"{uuid.uuid4()}"
     email_sent = send_email(smtp_server,smtp_port,username,password,recipient,unique_subject)
 
     if email_sent:

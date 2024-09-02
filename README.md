@@ -6,7 +6,7 @@ This project is based off of the Scorebot used in the Pros vs Joes CTF by BSides
 # Current Status
 
 ## To do
- - [ ] Scoreboard
+ - [x] Scoreboard
  - [ ] Flag submission portal
  - [ ] Monitor scripts
 	 - [x] DNS
@@ -22,7 +22,4 @@ The current development is being conducted on Ubuntu 22.04.4 LTS and will be tes
 
 ## Dependencies
 
-### Python
-dnspython
-ldap3
-ping3
+Check requirements.txt

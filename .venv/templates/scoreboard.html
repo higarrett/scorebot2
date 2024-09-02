@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Service Scoreboard</title>
+    <style>
+        .status {
+            display: inline-block;
+            padding: 5px 10px;
+            border-radius: 50%;
+            color: white;
+            font-weight: bold;
+            text-align: center;
+        }
+        .up {
+            background-color: green;
+        }
+        .down {
+            background-color: red;
+        }
+        table {
+            width: 100%;
+            margin-top: 20px;
+            border-collapse: collapse;
+        }
+        th, td {
+            text-align: left;
+            padding: 8px;
+            border-bottom: 1px solid #ddd;
+        }
+      th {
+            background-color: #4CAF50;
+            color: white;
+        }
+        #team-score {
+            margin-top: 20px;
+            font-size: 20px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <h1>Service Scoreboard</h1>
+    <div id="team-score">Team Score: 0</div>
+    <table id="scoreboard">
+        <thead>
+            <tr>
+                <th>System Name</th>
+                <th>Service Name</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Content filled by JavaScript -->
+        </tbody>
+    </table>
+    <script>
+        function fetchData() {
+            fetch('/status')
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    const tbody = document.querySelector('#scoreboard tbody');
+                    tbody.innerHTML = ''; // Clear existing rows
+                    for (const [system, services] of Object.entries(data)) {
+                        for (const [service, status] of Object.entries(services)) {
+                            const tr = tbody.insertRow();
+                            tr.insertCell().textContent = system;
+                            tr.insertCell().textContent = service;
+                            const statusCell = tr.insertCell();
+                            statusCell.textContent = status === 10 ? 'Up' : 'Down';
+                            statusCell.className = status === 10 ? 'up status' : 'down status';
+                        }
+                    }
+                    document.getElementById('team-score').textContent = `Team Score: ${data.Total}`;
+                })
+                .catch(error => console.error('Failed to fetch data:', error));
+        }
+        setInterval(fetchData, 5000); // Refresh every 5 seconds
+        document.addEventListener('DOMContentLoaded', fetchData); // Initial fetch
+    </script>
+</body>
+</html>

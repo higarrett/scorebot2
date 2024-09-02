@@ -2,7 +2,9 @@ import subprocess
 import time
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from threading import Thread
+import json
 
+total_score = 0
 
 def run_service_check(script_name, host, target_ip=None):
     script_path = f'monitors/{script_name}'
@@ -53,7 +55,8 @@ def check_services(host_email, host_ad, host_ftp):
         'smtp': 0,
         'ldap': 0,
         'ftp': 0,
-        'dns': 0
+        'dns': 0,
+        'http': 0
     }
 
     with ThreadPoolExecutor() as executor:
@@ -72,10 +75,35 @@ def check_services(host_email, host_ad, host_ftp):
                 parse_dns_output(output, scores)
             elif future == future_email:
                 parse_email_output(output, scores)
-
-    total_score = sum(scores.values())
+    global total_score
+    sum_score = sum(scores.values())
     print(f"Scores: {scores}")
-    print(f"Total Score: {total_score}")
+    print(f"Total Score: {sum_score}")
+    total_score += sum(scores.values())
+    parse_scores(scores, total_score)
+
+def parse_scores(scores, total_score):
+    current_scores = scores
+    system_services = {
+        "WinDC1": {"DNS": 'dns',"LDAP": 'ldap'},
+        "MailSrv": {"SMTP": 'smtp', "IMAP": 'imap'},
+        "WebSrv": {"Web": 'http', "FTP": 'ftp'},
+    }
+    formatted_scores = {"Total": total_score}
+    for system, services in system_services.items():
+        formatted_scores[system] = {service: current_scores.get(code, 0) for service, code in services.items()}
+
+    print(formatted_scores)
+    update_status_file(formatted_scores)
+
+
+def update_status_file(status_data, filename='service_scores.json'):
+    try:
+        with open(filename, 'w') as file:
+            json.dump(status_data, file)
+            print("Status updated successfully")
+    except Exception as e:
+        print(f"Failed to update status: {e}")
 
 def main():
     email_ip = '10.20.30.18'
