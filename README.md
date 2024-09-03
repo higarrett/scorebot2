@@ -4,16 +4,20 @@ Scorebot is a scoring engine for CTF competitions. It is built upon a Blue Team 
 This project is based off of the Scorebot used in the Pros vs Joes CTF by BSidesLV. Since I could not figure out how it is run or a clean way to get everything together, I am making my own.
 
 # Current Status
+Version 1.0 - Complete and Operational
+
+Version 1.1 - In Development
 
 ## To do
  - [x] Scoreboard
- - [ ] Flag submission portal
+ - [ ] Flag submission portal (1.1)
+ - [ ] SQL Database (1.1)
  - [ ] Monitor scripts
 	 - [x] DNS
 	 - [x] Email (SMTP & IMAP)
 	 - [x] FTP
 	 - [x] LDAP
-	 - [ ] Website Check
+	 - [ ] Website Check (1.1)
 
 # Setup
 
